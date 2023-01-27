@@ -1,0 +1,32 @@
+- src
+  - domain (camada de domínio)
+    - entities (entidades do sistema)
+      - user.ts (arquivo para a entidade user)
+    - usecases (regra de negócio)
+      - auth.ts (arquivo para autenticação)
+  - infrastructure (camada de infraestrutura)
+    - db (conexão com o banco de dados)
+      - prisma.ts (arquivo de configuração do prisma)
+  - interface (camada de interface)
+    - http (rotas e controllers)
+      - auth.ts (arquivo para autenticação)
+  - index.ts (ponto de entrada da aplicação)
+
+
+* A pasta src é a raiz do projeto e contém todos os arquivos do seu projeto.
+* A pasta domain contém as entidades e regras de negócio do sistema.
+* A pasta entities contém as entidades do sistema, como User, Product e Order.
+* A pasta usecases contém as regras de negócio, como autenticação, criação de pedido e pagamento.
+* A pasta infrastructure contém as implementações de baixo nível, como acesso ao banco de dados e envio de e-mails.
+* A pasta db contém os arquivos relacionados a conexão e configuração do banco de dados, como o arquivo prisma.ts
+* A pasta interface contém as implementações da camada de interface, como as rotas HTTP e controllers.
+O arquivo index.ts é o ponto de entrada da aplicação, onde a configuração e inicialização do servidor é feita.
+
+O fluxo para utilizar entidades do Clean Architecture e do Prisma pode ser o seguinte:
+
+- No nível da camada de domínio, criamos entidades com as regras de negócio específicas do nosso sistema, como por exemplo, a entidade User, que pode ter as propriedades como email, senha, nome, entre outros.
+Na camada de infraestrutura, configuramos o Prisma para se conectar ao banco de dados e gerenciar as operações CRUD. Aqui, utilizamos as entidades do Prisma, que são criadas a partir dos modelos do banco de dados.
+
+- Na camada de interface, onde lidamos com as requisições HTTP e os controllers, utilizamos as entidades do Clean Architecture para lidar com as regras de negócio e as entidades do Prisma para realizar as operações no banco de dados.
+
+- Por exemplo, ao criar um novo usuário através de uma requisição HTTP, o controller iria receber os dados do usuário e usar a entidade User do Clean Architecture para validar os dados e realizar as regras de negócio. Em seguida, utilizaria a entidade User do Prisma para criar um novo registro no banco de dados.
