@@ -5,7 +5,7 @@ import { AuthRoutes } from './interface/http/routers/auth';
 const fastify = Fastify({ logger: true });
 
 // Declaração de rotas
-AuthRoutes(auth,fastify);
+AuthRoutes(fastify);
 
 fastify.register(require('@fastify/cors') , {     
     origin: true,
