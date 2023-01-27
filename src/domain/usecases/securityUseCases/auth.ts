@@ -76,4 +76,30 @@ export class Auth implements IAuth {
     // Return the user's data
     return user
   }
+
+  async forgotPassword(email: string) { 
+    // Retrieve the user with the provided email
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email,
+      },
+    })
+    // If no user was found, throw an error
+    if (!user) {
+      throw new Error('Usuário não encontrado')
+    }
+    // Generate a random 4-digit number
+    const code = Math.floor(1000 + Math.random() * 9000)
+    // Store the code in the database
+    await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        // resetCode: code,
+      },
+    })
+    // Send an email to the user with the code
+    console.log(`Email sent to ${email} with code ${code}`)
+  }
 }

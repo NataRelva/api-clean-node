@@ -1,34 +1,27 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { IUser } from './domain/interfaces/iuser';
+import Fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import { auth } from './domain/usecases/securityUseCases';
+import { AuthRoutes } from './interface/http/routers/auth';
 
-const fastify = require('fastify')({ logger: true })
+const fastify = Fastify({ logger: true });
 
-fastify.post('/signup', async (req: FastifyRequest, res: FastifyReply) => {
-   try {
-    const dataUser: IUser = req.body as { email: string, password: string, name: string };
-    const user = await auth.signup(dataUser)
-    res.send({ user })
-   } catch (error) {
-    res.status(400).send({ message: error.message })
-   }
-})
+// Declaração de rotas
+AuthRoutes(auth,fastify);
 
-fastify.post('/login', async (req: FastifyRequest, res: FastifyReply) => { 
-    const { email, password } = req.body as { email: string, password: string }
-    try {
-      const token = await auth.login(email, password)
-      res.status(200).send({ token })
-    } catch (error) {
-      res.status(401).send({ message: error.message })
-    }
+fastify.register(require('@fastify/cors') , {     
+    origin: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 });
 
-const port = process.env.PORT || 3000;
+
+fastify.decorate('authenticate', async (request: FastifyRequest, reply: FastifyReply) => {});
+
+const port = Number(process.env.PORT || 3000);
 
 const start = async () => {
     try {
-        await fastify.listen({ port })
+        fastify.listen({ port });
     } catch (err) {
         fastify.log.error(err)
         process.exit(1)
